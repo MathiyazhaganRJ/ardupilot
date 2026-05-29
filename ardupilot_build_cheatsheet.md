@@ -84,7 +84,22 @@ Look for the `.apj` file (e.g. `arduplane.apj`) and flash it to your flight cont
 
 ---
 
-## 5. JSBSim Installation (For Advanced SITL)
+## 5. Custom Firmware (Enabling/Disabling Features)
+Flight controllers with a 1MB flash limit (like the Matek F405) disable non-essential features to save space. You can manually enable them, but you may need to disable other features to prevent a "flash overflow" error.
+
+```bash
+cd ~/ardupilot
+
+# Example: Enable System ID mode, but disable QuadPlane to save space
+./waf configure --board MatekF405-TE --enable-Mode-SystemID --disable-quadplane
+
+# View EVERY available enable/disable flag you can use
+./waf configure --help
+```
+
+---
+
+## 6. JSBSim Installation (For Advanced SITL)
 ArduPilot has a basic simulator, but if you want high-fidelity aerodynamics for ArduPlane, you must install JSBSim.
 
 ```bash
@@ -108,7 +123,7 @@ nano ~/.profile
 
 ---
 
-## 6. Running SITL (`sim_vehicle.py`)
+## 7. Running SITL (`sim_vehicle.py`)
 When simulating, you do not use `./waf` directly. The `sim_vehicle.py` script configures everything for you and launches the simulator. All commands are run from the `~/ardupilot` root folder.
 
 ```bash
@@ -122,7 +137,7 @@ Tools/autotest/sim_vehicle.py -v ArduCopter --console --map
 Tools/autotest/sim_vehicle.py -v ArduPlane --console --map
 
 # --- JSBSIM SITL COMMANDS (High-Fidelity Physics) ---
-# Requires JSBSim installed (See Section 5). 
+# Requires JSBSim installed (See Section 6). 
 # The 'Rascal' is a default plane model provided by ArduPilot
 Tools/autotest/sim_vehicle.py -v ArduPlane -f jsbsim:Rascal --console --map
 ```
@@ -133,7 +148,7 @@ Tools/autotest/sim_vehicle.py -v ArduPlane -f jsbsim:Rascal --console --map
 
 ---
 
-## 7. Helpful WAF Commands
+## 8. Helpful WAF Commands
 
 ```bash
 # Cleans out the current build files (fast, fixes minor glitches)
