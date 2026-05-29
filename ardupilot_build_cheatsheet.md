@@ -79,7 +79,29 @@ Look for the file ending in `.apj` (e.g., `arduplane.apj` or `arducopter.apj`). 
 
 ---
 
-## 5. Helpful WAF Commands
+## 5. Switching Between Hardware and SITL Simulation
+When using the same ArduPilot repository to build firmware AND run simulations, you must remember that **running a simulation changes the build configuration**.
+
+### Running SITL (Simulation)
+When simulating, you do not use `./waf` directly. The simulation script configures everything for you.
+```bash
+# This automatically configures the codebase for SITL and launches JSBSim
+Tools/autotest/sim_vehicle.py -v ArduPlane -f jsbsim:Rascal --console --map
+```
+
+### Switching Back to Hardware
+If you ran SITL and now want to build firmware for your real flight controller, you **must** reconfigure the board, otherwise it will try to build a PC simulation!
+```bash
+# 1. Reconfigure for your specific board
+./waf configure --board MatekF405-TE
+
+# 2. Compile the firmware
+./waf plane
+```
+
+---
+
+## 6. Helpful WAF Commands
 
 If you run into weird build errors, or if you change branches, it's highly recommended to clean your build environment and start fresh.
 
