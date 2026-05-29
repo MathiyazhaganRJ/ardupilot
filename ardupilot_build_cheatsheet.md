@@ -1,6 +1,6 @@
 # ArduPilot Build Cheat Sheet (WSL/Ubuntu)
 
-This is a simplified, quick-reference guide for building ArduPilot firmware and running SITL simulations.
+This is a comprehensive, quick-reference guide for building ArduPilot firmware, running SITL simulations, and helpful WAF commands.
 
 ## 1. Initial Setup (One-time only)
 These commands set up your ArduPilot environment on a fresh WSL/Ubuntu installation.
@@ -42,20 +42,35 @@ Before you compile for a physical flight controller, you must configure `waf` fo
 ```bash
 cd ~/ardupilot
 
-# 1. Configure for your specific board (Example: Matek F405-TE)
+# --- 1. CONFIGURATION COMMANDS ---
+# Configure for your specific board (Example: Matek F405-TE)
 ./waf configure --board MatekF405-TE
 
-# 2. Compile the firmware for your vehicle type
-./waf plane     # For Fixed Wing
-# ./waf copter  # For Multirotors
-# ./waf rover   # For Rovers
+# Configure for Cube Orange
+./waf configure --board CubeOrange
+
+# List all supported boards (if you don't know the exact name)
+./waf list_boards
+
+# --- 2. COMPILE COMMANDS ---
+# Compile the firmware for your vehicle type
+./waf plane     # For Fixed Wing (Planes)
+./waf copter    # For Multirotors (Quads, Hexas, etc.)
+./waf heli      # For Traditional Helicopters
+./waf rover     # For Rovers and Boats
+./waf sub       # For Submarines
+
+# --- 3. UPLOAD COMMANDS ---
+# If your flight controller is plugged in via USB and mapped to WSL, 
+# you can compile and upload in one command:
+./waf plane --upload
 ```
 
 ### Where is the compiled firmware?
 Once finished, the compiled files are located at:
 `~/ardupilot/build/<board_name>/bin/`
 
-Look for the `.apj` file and flash it to your flight controller using Mission Planner.
+Look for the `.apj` file (e.g. `arduplane.apj`) and flash it to your flight controller using Mission Planner if you didn't use the `--upload` flag.
 
 ---
 
@@ -89,9 +104,11 @@ When simulating, you do not use `./waf` directly. The simulation script configur
 ```bash
 cd ~/ardupilot/ArduPlane
 
-# Standard SITL (Basic physics)
+# --- STANDARD SITL COMMANDS ---
+# Basic physics simulation
 ../Tools/autotest/sim_vehicle.py -v ArduPlane --console --map
 
+# --- JSBSIM SITL COMMANDS ---
 # JSBSim SITL (Advanced physics, requires Step 4)
 # The 'Rascal' is a default model provided by ArduPilot
 ../Tools/autotest/sim_vehicle.py -v ArduPlane -f jsbsim:Rascal --console --map
@@ -106,10 +123,13 @@ cd ~/ardupilot/ArduPlane
 ## 6. Helpful WAF Commands
 
 ```bash
-# Cleans out the current build files (fast)
+# Cleans out the current build files (fast, fixes minor glitches)
 ./waf clean
 
-# Clean and reconfigure (recommended if you switch between branches)
+# Completely nukes the build directory and configuration (very thorough)
+./waf distclean
+
+# Clean and reconfigure (highly recommended if you switch branches!)
 ./waf distclean
 ./waf configure --board <board_name>
 ```
