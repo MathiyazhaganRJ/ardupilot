@@ -98,20 +98,23 @@ nano ~/.profile
 
 ---
 
-## 5. Running SITL (Simulation)
-When simulating, you do not use `./waf` directly. The simulation script configures everything for you and launches the simulator.
+## 5. Running SITL (`sim_vehicle.py`)
+When simulating, you do not use `./waf` directly. The `sim_vehicle.py` script configures everything for you and launches the simulator. All commands are run from the `~/ardupilot` root folder.
 
 ```bash
-cd ~/ardupilot/ArduPlane
+cd ~/ardupilot
 
-# --- STANDARD SITL COMMANDS ---
-# Basic physics simulation
-../Tools/autotest/sim_vehicle.py -v ArduPlane --console --map
+# --- STANDARD SITL COMMANDS (Basic Physics) ---
+# Simulating a Quadcopter (ArduCopter)
+Tools/autotest/sim_vehicle.py -v ArduCopter --console --map
 
-# --- JSBSIM SITL COMMANDS ---
-# JSBSim SITL (Advanced physics, requires Step 4)
-# The 'Rascal' is a default model provided by ArduPilot
-../Tools/autotest/sim_vehicle.py -v ArduPlane -f jsbsim:Rascal --console --map
+# Simulating a Fixed Wing Plane (ArduPlane)
+Tools/autotest/sim_vehicle.py -v ArduPlane --console --map
+
+# --- JSBSIM SITL COMMANDS (High-Fidelity Physics) ---
+# Requires JSBSim installed (See Section 4). 
+# The 'Rascal' is a default plane model provided by ArduPilot
+Tools/autotest/sim_vehicle.py -v ArduPlane -f jsbsim:Rascal --console --map
 ```
 
 > [!WARNING]
