@@ -148,7 +148,35 @@ Tools/autotest/sim_vehicle.py -v ArduPlane -f jsbsim:Rascal --console --map
 
 ---
 
-## 8. Helpful WAF Commands
+## 8. Pro Tips & Advanced Tricks!
+Here are some extremely useful tricks that many beginners miss, but will save you hours of headaches:
+
+```bash
+# --- 1. WIPE SIMULATOR MEMORY ---
+# If your SITL simulation starts acting crazy or crashing, it's usually 
+# because of corrupted parameters from a previous flight. 
+# Add the '-w' flag to wipe the EEPROM and start fresh!
+Tools/autotest/sim_vehicle.py -v ArduPlane -w --console --map
+
+# --- 2. START SIMULATOR AT A CUSTOM LOCATION ---
+# Bored of the default Australian test field? Add '-L' to spawn anywhere.
+# (e.g., KSFO is San Francisco Airport)
+Tools/autotest/sim_vehicle.py -v ArduPlane -L KSFO --console --map
+
+# --- 3. UPLOAD TO A SPECIFIC PORT ---
+# If '--upload' fails because it can't find your flight controller, 
+# you can manually specify the COM/Serial port.
+./waf plane --upload --port /dev/ttyACM0
+
+# --- 4. EXTREME DEBUGGING ---
+# If your firmware is randomly rebooting the flight controller, build it 
+# with the debug flag so you can use GDB to track down the crash.
+./waf configure --board MatekF405-TE --debug
+```
+
+---
+
+## 9. Helpful WAF Commands
 
 ```bash
 # Cleans out the current build files (fast, fixes minor glitches)
