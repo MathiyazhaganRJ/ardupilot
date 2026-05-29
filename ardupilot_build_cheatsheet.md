@@ -25,7 +25,17 @@ Tools/environment_install/install-prereqs-ubuntu.sh -y
 
 ---
 
-## 2. Getting the Latest Code (Before building)
+## 2. Verify Compiler Installation
+To ensure the ARM compiler was successfully installed and added to your path, run this check:
+
+```bash
+arm-none-eabi-gcc --version
+```
+*If this prints a version number, you are good to go! If it says "command not found", try running `. ~/.profile` again or restart your terminal.*
+
+---
+
+## 3. Getting the Latest Code (Before building)
 If you haven't built in a while, fetch the latest updates from the ArduPilot servers.
 
 ```bash
@@ -36,7 +46,7 @@ git submodule update --init --recursive
 
 ---
 
-## 3. Configuring and Compiling for Hardware
+## 4. Configuring and Compiling for Hardware
 Before you compile for a physical flight controller, you must configure `waf` for that specific board.
 
 ```bash
@@ -74,7 +84,7 @@ Look for the `.apj` file (e.g. `arduplane.apj`) and flash it to your flight cont
 
 ---
 
-## 4. JSBSim Installation (For Advanced SITL)
+## 5. JSBSim Installation (For Advanced SITL)
 ArduPilot has a basic simulator, but if you want high-fidelity aerodynamics for ArduPlane, you must install JSBSim.
 
 ```bash
@@ -98,7 +108,7 @@ nano ~/.profile
 
 ---
 
-## 5. Running SITL (`sim_vehicle.py`)
+## 6. Running SITL (`sim_vehicle.py`)
 When simulating, you do not use `./waf` directly. The `sim_vehicle.py` script configures everything for you and launches the simulator. All commands are run from the `~/ardupilot` root folder.
 
 ```bash
@@ -112,7 +122,7 @@ Tools/autotest/sim_vehicle.py -v ArduCopter --console --map
 Tools/autotest/sim_vehicle.py -v ArduPlane --console --map
 
 # --- JSBSIM SITL COMMANDS (High-Fidelity Physics) ---
-# Requires JSBSim installed (See Section 4). 
+# Requires JSBSim installed (See Section 5). 
 # The 'Rascal' is a default plane model provided by ArduPilot
 Tools/autotest/sim_vehicle.py -v ArduPlane -f jsbsim:Rascal --console --map
 ```
@@ -123,7 +133,7 @@ Tools/autotest/sim_vehicle.py -v ArduPlane -f jsbsim:Rascal --console --map
 
 ---
 
-## 6. Helpful WAF Commands
+## 7. Helpful WAF Commands
 
 ```bash
 # Cleans out the current build files (fast, fixes minor glitches)
